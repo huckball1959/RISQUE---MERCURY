@@ -93,6 +93,7 @@
 </head>
 <body>
   <div class="canvas-wrapper" id="canvas">
+    <img id="stage-image" class="stage-image" src="assets/Images/stage.png" alt="Stage">
     <svg class="svg-overlay" viewBox="0 0 1920 1080"></svg>
     <div class="ui-overlay" id="ui-overlay"></div>
     <div id="error" class="error"></div>
@@ -129,7 +130,7 @@
       return gk_fileData[filename] || "";
     }
   </script>
-  <script src="core.js?v=3"></script>
+  <script src="core.js?v=4"></script>
   <script>
     console.log("[Income] Loaded at", new Date().toLocaleString());
 
@@ -291,9 +292,10 @@
           window.gameUtils.showError("Confirm button not found");
         }
         logToStorage("Income UI rendering completed");
-        window.gameUtils.initGameView();
-        window.gameUtils.renderTerritories(null, gameState);
-        window.gameUtils.renderStats(gameState);
+        window.gameUtils.ensureMapVisible(() => {
+          window.gameUtils.renderTerritories(null, gameState);
+          window.gameUtils.renderStats(gameState);
+        });
       } catch (e) {
         console.error("[Income] Failed to initialize income phase:", e.message);
         window.gameUtils.showError("Failed to initialize income phase");

@@ -155,15 +155,45 @@ window.gameUtils = {
   getStageImageCandidates: function() {
     return ['assets/Images/stage.png', 'assets/images/stage.png'].map(p => this.resolveAssetPath(p));
   },
+  showMapLayers: function() {
+    const canvas = document.getElementById('canvas');
+    if (canvas) canvas.classList.add('visible');
+    document.querySelectorAll('.stage-image, #stage-image').forEach(el => el.classList.add('visible'));
+    const svgOverlay = document.querySelector('.svg-overlay');
+    const uiOverlay = document.querySelector('.ui-overlay');
+    if (svgOverlay) svgOverlay.classList.add('visible');
+    if (uiOverlay) uiOverlay.classList.add('visible');
+  },
+  ensureMapVisible: function(onReady) {
+    this.initGameView();
+    const stageImage = document.querySelector('.stage-image, #stage-image');
+    const done = () => {
+      this.showMapLayers();
+      this.resizeCanvas();
+      if (typeof onReady === 'function') onReady(stageImage);
+    };
+    if (!stageImage) {
+      done();
+      return;
+    }
+    if (stageImage.naturalWidth > 0) {
+      done();
+      return;
+    }
+    delete stageImage.dataset.stageConfigured;
+    this.configureStageImage(stageImage, done);
+  },
   configureStageImage: function(img, onReady) {
     if (!img) return;
     const hasCallback = typeof onReady === 'function';
     if (img.dataset.stageConfigured === '1') {
-      if (hasCallback) {
-        if (img.naturalWidth > 0) onReady(img);
-        else img.addEventListener('load', () => onReady(img), { once: true });
+      if (img.naturalWidth > 0) {
+        this.showMapLayers();
+        this.resizeCanvas();
+        if (hasCallback) onReady(img);
+        return;
       }
-      return;
+      delete img.dataset.stageConfigured;
     }
     img.dataset.stageConfigured = '1';
     const candidates = this.getStageImageCandidates();
@@ -172,9 +202,7 @@ window.gameUtils = {
     const finish = () => {
       if (finished) return;
       finished = true;
-      img.classList.add('visible');
-      const canvas = document.getElementById('canvas');
-      if (canvas) canvas.classList.add('visible');
+      this.showMapLayers();
       this.resizeCanvas();
       if (hasCallback) onReady(img);
     };
@@ -432,14 +460,18 @@ window.gameUtils = {
       this.showError('Canvas wrapper not found');
       return;
     }
-    let stageImage = document.querySelector('.stage-image');
+    let stageImage = document.querySelector('.stage-image, #stage-image');
     if (!stageImage) {
       stageImage = document.createElement('img');
       stageImage.id = 'stage-image';
       stageImage.alt = 'Stage';
       stageImage.className = 'stage-image';
-      canvasWrapper.appendChild(stageImage);
       console.log('[Core] Stage image created');
+    }
+    if (stageImage.parentElement !== canvasWrapper) {
+      canvasWrapper.insertBefore(stageImage, canvasWrapper.firstChild);
+    } else if (canvasWrapper.firstElementChild !== stageImage) {
+      canvasWrapper.insertBefore(stageImage, canvasWrapper.firstChild);
     }
     this.configureStageImage(stageImage);
     let svgOverlay = document.querySelector('.svg-overlay');
@@ -822,13 +854,7 @@ window.gameUtils = {
     }
     const scale = Math.min(window.innerHeight / 1080, window.innerWidth / 1920);
     canvas.style.transform = `translate(-50%, 0) scale(${scale})`;
-    canvas.classList.add('visible');
-    const stageImage = document.querySelector('.stage-image');
-    const svgOverlay = document.querySelector('.svg-overlay');
-    const uiOverlay = document.querySelector('.ui-overlay');
-    if (stageImage) stageImage.classList.add('visible');
-    if (svgOverlay) svgOverlay.classList.add('visible');
-    if (uiOverlay) uiOverlay.classList.add('visible');
+    this.showMapLayers();
     console.log('[Core] Canvas scaled:', { scale, innerWidth: window.innerWidth, innerHeight: window.innerHeight });
   },
   renderAll: function(gameState, changedLabel = null, deployedTroops = {}) {

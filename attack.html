@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>Attack Phase</title>
   <link rel="stylesheet" href="game.css">
-  <script src="core.js?v=3"></script>
+  <script src="core.js?v=4"></script>
   <style>
     html, body {
       margin: 0;
@@ -137,6 +137,7 @@
 </head>
 <body>
   <div class="canvas-wrapper" id="canvas">
+    <img id="stage-image" class="stage-image" src="assets/Images/stage.png" alt="Stage">
     <svg class="svg-overlay" viewBox="0 0 1920 1080"></svg>
     <div class="ui-overlay" id="ui-overlay">
       <div class="attack-player-name" id="attack-player-name"></div>
@@ -1440,7 +1441,7 @@
             }
           });
           try {
-            window.gameUtils.initGameView();
+            window.gameUtils.ensureMapVisible(() => {
             if (window.gameState.attackPhase === 'pending_transfer' && window.gameState.conqueredThisTurn && window.gameState.attackingTerritory && window.gameState.acquiredTerritory) {
               logToStorage('Resuming troop transfer', {
                 attackingTerritory: window.gameState.attackingTerritory,
@@ -1469,6 +1470,7 @@
             }
             requestAnimationFrame(() => {
               window.gameUtils.resizeCanvas();
+            });
             });
           } catch (e) {
             if (retryCount < maxRetries) {

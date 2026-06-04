@@ -130,7 +130,7 @@
       <div id="error" class="error" role="alert"></div>
     </div>
   </div>
-  <script src="core.js?v=3"></script>
+  <script src="core.js?v=4"></script>
   <script type="text/javascript">
     try {
       function logToConsole(message) {
@@ -439,8 +439,9 @@
         }
         window.gameUtils.init();
         requestAnimationFrame(() => {
-          window.gameUtils.initGameView();
-          initializeDeployment();
+          window.gameUtils.ensureMapVisible(() => {
+            initializeDeployment();
+          });
         });
       });
     } catch (e) {

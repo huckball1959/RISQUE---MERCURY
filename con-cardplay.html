@@ -46,6 +46,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>RISQUE - Conquest Card Play Phase</title>
+  <link rel="stylesheet" href="game.css">
   <style>
     .cardplay-player-name {
       font-family: Arial, sans-serif;
@@ -177,6 +178,7 @@
 </head>
 <body>
   <div class="canvas-wrapper" id="canvas">
+    <img id="stage-image" class="stage-image" src="assets/Images/stage.png" alt="Stage">
     <svg class="svg-overlay" viewBox="0 0 1920 1080"></svg>
     <div class="ui-overlay" id="ui-overlay"></div>
     <div id="error" class="error"></div>
@@ -219,7 +221,7 @@
       });
     }
   </script>
-  <script src="core.js?v=3"></script>
+  <script src="core.js?v=4"></script>
   <script>
     console.log('[Con-Cardplay] Loaded at', new Date().toLocaleString());
     window.gameUtils = window.gameUtils || {};
@@ -388,12 +390,12 @@
       checkCardStatus();
       requestAnimationFrame(() => {
         logToStorage('Initializing game view');
-        window.gameUtils.resizeCanvas();
-        window.gameUtils.initGameView();
-        window.gameUtils.renderTerritories(null, window.gameState);
-        window.gameUtils.renderStats(window.gameState);
-        const svgOverlay = document.querySelector('.svg-overlay');
-        logToStorage('Rendering markers, numbers, and stats', { svgContent: svgOverlay ? svgOverlay.innerHTML : 'No SVG overlay' });
+        window.gameUtils.ensureMapVisible(() => {
+          window.gameUtils.renderTerritories(null, window.gameState);
+          window.gameUtils.renderStats(window.gameState);
+          const svgOverlay = document.querySelector('.svg-overlay');
+          logToStorage('Rendering markers, numbers, and stats', { svgContent: svgOverlay ? svgOverlay.innerHTML : 'No SVG overlay' });
+        });
       });
       if (currentPlayer.cardCount > 4) {
         document.getElementById('error').textContent = `You have ${currentPlayer.cardCount} cards. Must play/dump to 4 or fewer.`;

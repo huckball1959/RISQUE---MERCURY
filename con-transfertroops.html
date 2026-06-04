@@ -166,7 +166,7 @@
     <div class="ui-overlay" id="ui-overlay"></div>
     <div id="error" class="error"></div>
   </div>
-  <script src="core.js?v=3"></script>
+  <script src="core.js?v=4"></script>
   <script>
     console.log('[TroopTransfer] Loaded at', new Date().toLocaleString());
     let currentPlayer = null;
@@ -299,8 +299,7 @@
         window.gameUtils.showError('Proceed button not found');
       }
       requestAnimationFrame(() => {
-        window.gameUtils.resizeCanvas();
-        window.gameUtils.initGameView();
+        window.gameUtils.ensureMapVisible();
         window.gameUtils.renderTerritories(null, window.gameState);
         window.gameUtils.renderStats(window.gameState);
         logToStorage('Game view rendered');

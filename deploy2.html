@@ -8,7 +8,7 @@
   <meta http-equiv="Expires" content="0">
   <title>RISQUE - Second Deployment</title>
   <link rel="stylesheet" href="game.css">
-  <script src="core.js?v=3"></script>
+  <script src="core.js?v=4"></script>
   <style>
     .deploy-player-name {
       font-family: Arial, sans-serif;
@@ -75,6 +75,7 @@
 </head>
 <body>
   <div class="canvas-wrapper" id="canvas">
+    <img id="stage-image" class="stage-image" src="assets/Images/stage.png" alt="Stage">
     <svg class="svg-overlay" viewBox="0 0 1920 1080" role="region" aria-label="Territory map"></svg>
     <div class="ui-overlay" id="ui-overlay"></div>
     <div id="error" class="error"></div>
@@ -438,10 +439,11 @@
         logToStorage('Player card counts on load', {
           players: window.gameState.players.map(p => ({ name: p.name, cardCount: p.cardCount, cards: p.cards }))
         });
-        window.gameUtils.initGameView();
-        deployInit();
-        window.gameUtils.renderTerritories(null, gameState);
-        window.gameUtils.renderStats(gameState);
+        window.gameUtils.ensureMapVisible(() => {
+          deployInit();
+          window.gameUtils.renderTerritories(null, gameState);
+          window.gameUtils.renderStats(gameState);
+        });
       });
     });
 

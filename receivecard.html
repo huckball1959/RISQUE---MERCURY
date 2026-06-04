@@ -44,7 +44,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Receive Card</title>
   <link rel="stylesheet" href="game.css">
-  <script src="core.js?v=3"></script>
+  <script src="core.js?v=4"></script>
   <style>
     .text {
       position: absolute;
@@ -90,6 +90,8 @@
 </head>
 <body>
   <div class="canvas-wrapper" id="canvas">
+    <img id="stage-image" class="stage-image" src="assets/Images/stage.png" alt="Stage">
+    <svg class="svg-overlay" viewBox="0 0 1920 1080"></svg>
     <div class="ui-overlay">
       <div id="title" class="text title" style="left: 1152px; top: 328.53px; width: 704px; height: 80px;">Receive Card</div>
       <div id="player-name" class="text player-name" style="left: 1152px; top: 275px; width: 704px; height: 64px;"></div>
@@ -394,9 +396,10 @@
           return;
         }
         window.gameState = gameState;
-        window.gameUtils.initGameView();
-        window.gameUtils.renderTerritories(null, window.gameState);
-        window.gameUtils.renderStats(window.gameState);
+        window.gameUtils.ensureMapVisible(() => {
+          window.gameUtils.renderTerritories(null, window.gameState);
+          window.gameUtils.renderStats(window.gameState);
+        });
         updatePlayerNameDisplay();
         displayCard();
         document.getElementById('end-turn').addEventListener('click', endTurn);
