@@ -145,9 +145,71 @@ window.gameUtils = {
     yellow: "#ffff00"
   },
   stageImageSrc: 'assets/Images/stage.png',
+  resolveAssetPath: function(relativePath) {
+    try {
+      return new URL(relativePath, window.location.href).href;
+    } catch (e) {
+      return relativePath;
+    }
+  },
+  getStageImageCandidates: function() {
+    return ['assets/Images/stage.png', 'assets/images/stage.png'].map(p => this.resolveAssetPath(p));
+  },
+  configureStageImage: function(img, onReady) {
+    if (!img) return;
+    const hasCallback = typeof onReady === 'function';
+    if (img.dataset.stageConfigured === '1') {
+      if (hasCallback) {
+        if (img.naturalWidth > 0) onReady(img);
+        else img.addEventListener('load', () => onReady(img), { once: true });
+      }
+      return;
+    }
+    img.dataset.stageConfigured = '1';
+    const candidates = this.getStageImageCandidates();
+    let index = 0;
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      img.classList.add('visible');
+      const canvas = document.getElementById('canvas');
+      if (canvas) canvas.classList.add('visible');
+      this.resizeCanvas();
+      if (hasCallback) onReady(img);
+    };
+    const tryNext = () => {
+      if (index >= candidates.length) {
+        console.error('[Core] Failed to load stage image from all candidates', candidates);
+        this.showError('Failed to load stage image');
+        finish();
+        return;
+      }
+      const url = candidates[index++];
+      img.onload = () => {
+        if (img.naturalWidth > 0) {
+          console.log('[Core] Stage image loaded:', url);
+          finish();
+        } else {
+          tryNext();
+        }
+      };
+      img.onerror = () => tryNext();
+      img.src = url;
+      if (img.complete && img.naturalWidth > 0) finish();
+    };
+    tryNext();
+  },
+  bindStageImages: function() {
+    document.querySelectorAll('.stage-image, #stage-image').forEach(img => {
+      if (img.dataset.stageConfigured) return;
+      img.dataset.stageConfigured = '1';
+      this.configureStageImage(img);
+    });
+  },
   getCardImageSrc: function(cardName) {
     const name = (typeof cardName === 'string' ? cardName : cardName?.name || '').toUpperCase();
-    return `assets/Images/Cards/${name}.webp`;
+    return this.resolveAssetPath(`assets/Images/Cards/${name}.webp`);
   },
   getNextContinentValue: function(continent, collectionCount) {
     const increments = {
@@ -374,13 +436,12 @@ window.gameUtils = {
     if (!stageImage) {
       stageImage = document.createElement('img');
       stageImage.id = 'stage-image';
-      stageImage.src = this.stageImageSrc;
       stageImage.alt = 'Stage';
       stageImage.className = 'stage-image';
-      stageImage.onerror = () => this.showError('Failed to load stage image');
       canvasWrapper.appendChild(stageImage);
       console.log('[Core] Stage image created');
     }
+    this.configureStageImage(stageImage);
     let svgOverlay = document.querySelector('.svg-overlay');
     if (!svgOverlay) {
       svgOverlay = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -809,4 +870,7 @@ window.gameUtils = {
     console.log('[Core] Initialized');
   }
 };
+document.addEventListener('DOMContentLoaded', () => {
+  window.gameUtils.bindStageImages();
+});
 window.gameUtils.init();
