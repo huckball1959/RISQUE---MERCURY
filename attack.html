@@ -273,7 +273,7 @@
           territories: player.territories.map(t => ({ name: t.name, troops: t.troops }))
         });
         window.gameUtils.showError('Negative troop total detected. Redirecting to risque.');
-        setTimeout(() => window.location.href = 'risque.html', 2000);
+        setTimeout(() => window.location.href = 'index.html', 2000);
         return total;
       }
       if (player.troopsTotal !== total) {
@@ -422,7 +422,7 @@
                 acquiredTerritory: acquiredTerritory?.name || window.gameState.acquiredTerritory?.name
               });
               window.gameUtils.showError('Territory data missing. Redirecting to risque.');
-              setTimeout(() => window.location.href = 'risque.html', 2000);
+              setTimeout(() => window.location.href = 'index.html', 2000);
               return;
             }
             let value = parseInt(troopsInput.value) || selectOptions.troops.min;
@@ -693,7 +693,7 @@
           }
           logToStorage('Canvas or UI elements not found in initTroopTransfer');
           window.gameUtils.showError('Canvas or UI elements not found. Redirecting to risque.');
-          setTimeout(() => window.location.href = 'risque.html', 2000);
+          setTimeout(() => window.location.href = 'index.html', 2000);
           return;
         }
         if (!window.gameState.attackingTerritory || !window.gameState.acquiredTerritory || !window.gameState.minTroopsToTransfer) {
@@ -1060,14 +1060,14 @@
           console.error('[Attack] Missing DOM elements after max retries', { canvasWrapper: !!canvasWrapper, errorElement: !!errorElement, uiOverlay: !!uiOverlay });
           logToStorage('Missing canvas or error element after max retries. Redirecting to risque.');
           window.gameUtils.showError('Missing canvas or error element. Redirecting to risque.');
-          setTimeout(() => window.location.href = 'risque.html', 1000);
+          setTimeout(() => window.location.href = 'index.html', 1000);
           return;
         }
         window.gameUtils.loadGameState(gameState => {
           if (!gameState || !gameState.players || !Array.isArray(gameState.players) || !gameState.currentPlayer) {
             logToStorage('Invalid game state: missing core properties', { gameState });
             window.gameUtils.showError('Invalid game state. Redirecting to risque.');
-            setTimeout(() => window.location.href = 'risque.html', 1000);
+            setTimeout(() => window.location.href = 'index.html', 1000);
             return;
           }
           window.gameState = gameState;
@@ -1090,7 +1090,7 @@
           if (!currentPlayer || !currentPlayer.territories.length) {
             logToStorage('Current player not found or has no territories');
             window.gameUtils.showError('Invalid player state. Redirecting to risque.');
-            setTimeout(() => window.location.href = 'risque.html', 1000);
+            setTimeout(() => window.location.href = 'index.html', 1000);
             return;
           }
           updatePlayerTroopsTotal(currentPlayer);
@@ -1479,7 +1479,7 @@
             }
             logToStorage('Initialization error after max retries', { error: e.message });
             window.gameUtils.showError('Failed to initialize game view: ' + e.message);
-            setTimeout(() => window.location.href = 'risque.html', 1000);
+            setTimeout(() => window.location.href = 'index.html', 1000);
           }
         });
       }

@@ -267,7 +267,7 @@
       } catch (e) {
         console.error("[Income] Failed to initialize income phase:", e.message);
         window.gameUtils.showError("Failed to initialize income phase");
-        setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+        setTimeout(() => { window.location.href = 'index.html'; }, 2000);
       }
     }
 
@@ -277,7 +277,7 @@
         if (!gameState) {
           logToStorage("No game state found");
           window.gameUtils.showError("No game state found. Redirecting to risque.");
-          setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+          setTimeout(() => { window.location.href = 'index.html'; }, 2000);
           return;
         }
         window.gameState = gameState;

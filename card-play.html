@@ -265,7 +265,7 @@
       if (!gameState || !gameState.players || !gameState.currentPlayer) {
         logToStorage('Invalid game state');
         window.gameUtils.showError("Invalid game state. Redirecting to risque.");
-        setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+        setTimeout(() => { window.location.href = 'index.html'; }, 2000);
         return;
       }
       initialGameState = JSON.parse(JSON.stringify(gameState));
@@ -273,7 +273,7 @@
       if (!currentPlayer) {
         logToStorage('Current player not found');
         window.gameUtils.showError("Current player not found. Redirecting to risque.");
-        setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+        setTimeout(() => { window.location.href = 'index.html'; }, 2000);
         return;
       }
       currentPlayer.cards = currentPlayer.cards.map(card => {
@@ -325,7 +325,7 @@
           if (index < cardPositions.length && window.gameUtils.cardNames.includes(card.name)) {
             const pos = cardPositions[index];
             cardHtml += `
-              <img class="card" src="assets/images/cards/${card.name}.webp" style="left: ${pos.x}px; top: ${pos.y}px; width: ${pos.width}px; height: ${pos.height}px;" data-card="${card.name}" data-id="${card.id}" alt="${card.name.replace(/_/g, " ")} card">
+              <img class="card" src="${window.gameUtils.getCardImageSrc(card.name)}" style="left: ${pos.x}px; top: ${pos.y}px; width: ${pos.width}px; height: ${pos.height}px;" data-card="${card.name}" data-id="${card.id}" alt="${card.name.replace(/_/g, " ")} card">
             `;
           }
         });
@@ -1145,9 +1145,9 @@
     document.addEventListener('DOMContentLoaded', () => {
       window.gameUtils.loadGameState((gameState) => {
         if (!gameState || !gameState.players || !gameState.currentPlayer || !gameState.turnOrder || !Array.isArray(gameState.turnOrder) || gameState.turnOrder.length === 0) {
-          logToStorage('Invalid or missing game state, redirecting to risque.html');
+          logToStorage('Invalid or missing game state, redirecting to index.html');
           window.gameUtils.showError('Invalid game state. Redirecting to risque.');
-          setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+          setTimeout(() => { window.location.href = 'index.html'; }, 2000);
           return;
         }
         window.gameState = gameState;

@@ -148,7 +148,7 @@
 </head>
 <body>
   <div class="canvas-wrapper" id="canvas">
-    <img id="stage-image" src="./assets/images/stage.png" alt="Stage" class="stage-image">
+    <img id="stage-image" src="assets/Images/stage.png" alt="Stage" class="stage-image">
     <svg class="svg-overlay" viewBox="0 0 1920 1080" role="region" aria-label="Territory map"></svg>
     <div class="deal-text" id="deal-text">DEALING CARDS NOW</div>
     <div id="error" class="error"></div>
@@ -410,7 +410,7 @@
         }
         stageImage.onerror = () => {
           logToConsole("Failed to load stage image");
-          showError("Failed to load stage image. Ensure ./assets/images/stage.png exists.");
+          showError("Failed to load stage image. Ensure assets/Images/stage.png exists.");
         };
         const init = () => {
           logToConsole("Stage image loaded successfully");

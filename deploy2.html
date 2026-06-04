@@ -142,7 +142,7 @@
       if (!isValid) {
         logToStorage("Game state invalid", window.gameState);
         window.gameUtils.showError("Invalid game state. Redirecting to risque.");
-        setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+        setTimeout(() => { window.location.href = 'index.html'; }, 2000);
         return false;
       }
       return true;
@@ -176,13 +176,13 @@
       if (invalidPlayer) {
         logToStorage(`Player has no territories: ${invalidPlayer.name}`);
         window.gameUtils.showError('Invalid game state: Player has no territories. Redirecting to login.');
-        setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+        setTimeout(() => { window.location.href = 'index.html'; }, 2000);
         return;
       }
       if (!window.gameState.currentPlayer || !window.gameState.turnOrder.includes(window.gameState.currentPlayer)) {
         logToStorage(`Invalid currentPlayer or turnOrder: ${window.gameState.currentPlayer}`);
         window.gameUtils.showError('Invalid game state: No current player. Redirecting to login.');
-        setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+        setTimeout(() => { window.location.href = 'index.html'; }, 2000);
         return;
       }
       deploymentOrder = [...window.gameState.turnOrder];
@@ -422,7 +422,7 @@
         if (!gameState) {
           logToStorage("No game state found");
           window.gameUtils.showError("No game state found. Redirecting to risque.");
-          setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+          setTimeout(() => { window.location.href = 'index.html'; }, 2000);
           return;
         }
         window.gameState = gameState;

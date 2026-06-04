@@ -171,14 +171,14 @@
         if (!gameState?.players || !gameState.currentPlayer || !gameState.continentCollectionCounts) {
           console.error("[Income] Invalid game state");
           window.gameUtils.showError("Invalid game state. Redirecting to risque.");
-          setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+          setTimeout(() => { window.location.href = 'index.html'; }, 2000);
           return;
         }
         const currentPlayer = gameState.players.find(p => p.name === gameState.currentPlayer);
         if (!currentPlayer) {
           console.error("[Income] Current player not found");
           window.gameUtils.showError("Current player not found. Redirecting to risque.");
-          setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+          setTimeout(() => { window.location.href = 'index.html'; }, 2000);
           return;
         }
         currentPlayer.bankValue = currentPlayer.bankValue || 0;
@@ -297,7 +297,7 @@
       } catch (e) {
         console.error("[Income] Failed to initialize income phase:", e.message);
         window.gameUtils.showError("Failed to initialize income phase");
-        setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+        setTimeout(() => { window.location.href = 'index.html'; }, 2000);
       }
     }
 
@@ -307,7 +307,7 @@
         if (!gameState) {
           logToStorage("No game state found");
           window.gameUtils.showError("No game state found. Redirecting to risque.");
-          setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+          setTimeout(() => { window.location.href = 'index.html'; }, 2000);
           return;
         }
         window.gameState = gameState;

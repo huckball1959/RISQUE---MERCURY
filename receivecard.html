@@ -94,7 +94,7 @@
       <div id="title" class="text title" style="left: 1152px; top: 328.53px; width: 704px; height: 80px;">Receive Card</div>
       <div id="player-name" class="text player-name" style="left: 1152px; top: 275px; width: 704px; height: 64px;"></div>
       <div id="card-message" class="text" style="left: 1152px; top: 370px; width: 704px; height: 80px; font-size: 40px;"></div>
-      <img id="new-card-image" class="card-image new-card" alt="No card earned" src="assets/images/cards/CARDBACK.webp">
+      <img id="new-card-image" class="card-image new-card" alt="No card earned" src="assets/Images/Cards/CARDBACK.webp">
       <button id="end-turn" class="button" style="left: 1250px; top: 900px; width: 260px; height: 35px;" aria-label="End turn">End Turn</button>
       <button id="save-game" class="button" style="left: 1520px; top: 900px; width: 260px; height: 35px; background: #28a745; color: #ffffff;" aria-label="Save game">Save Game</button>
     </div>
@@ -217,7 +217,7 @@
         const cardName = typeof card === 'string' ? card : card.name;
         const img = document.createElement('img');
         img.className = 'card-image hand-card';
-        img.src = `assets/images/cards/${cardName}.webp`;
+        img.src = window.gameUtils.getCardImageSrc(cardName);
         img.alt = `Card: ${cardName.replace(/_/g, ' ')}`;
         img.style.left = `${startX + (index * (cardWidth + spacing))}px`;
         img.style.top = '550px';
@@ -232,7 +232,7 @@
           window.gameState.cardAwardedThisTurn = true;
           window.gameState.lastCardDrawn = newCard.name;
           cardMessage.textContent = `New card: ${newCard.name.replace(/_/g, ' ').toUpperCase()}`;
-          newCardImage.src = `assets/images/cards/${newCard.name}.webp`;
+          newCardImage.src = window.gameUtils.getCardImageSrc(newCard.name);
           newCardImage.alt = `New card: ${newCard.name.replace(/_/g, ' ')}`;
           newCardImage.style.left = `${startX + (handCards.length * (cardWidth + spacing))}px`;
           newCardImage.style.top = '550px';
@@ -240,7 +240,7 @@
         } else {
           logToStorage('Failed to draw a non-duplicate card or no cards available');
           cardMessage.textContent = 'No unique cards available.';
-          newCardImage.src = 'assets/images/cards/CARDBACK.webp';
+          newCardImage.src = 'assets/Images/Cards/CARDBACK.webp';
           newCardImage.alt = 'No card earned';
           newCardImage.style.left = `${startX + (handCards.length * (cardWidth + spacing))}px`;
           newCardImage.style.top = '550px';
@@ -248,7 +248,7 @@
         }
       } else {
         cardMessage.textContent = 'No card earned';
-        newCardImage.src = 'assets/images/cards/CARDBACK.webp';
+        newCardImage.src = 'assets/Images/Cards/CARDBACK.webp';
         newCardImage.alt = 'No card earned';
         newCardImage.style.left = `${startX + (handCards.length * (cardWidth + spacing))}px`;
         newCardImage.style.top = '550px';
@@ -262,14 +262,14 @@
       if (!gameState || !gameState.turnOrder || !Array.isArray(gameState.turnOrder) || gameState.turnOrder.length === 0) {
         logToStorage('Invalid game state for advancing turn');
         showPrompt('Invalid game state. Redirecting to risque.');
-        setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+        setTimeout(() => { window.location.href = 'index.html'; }, 2000);
         return false;
       }
       const currentIndex = gameState.turnOrder.indexOf(gameState.currentPlayer);
       if (currentIndex === -1) {
         logToStorage('Current player not in turn order');
         showPrompt('Invalid turn order. Redirecting to risque.');
-        setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+        setTimeout(() => { window.location.href = 'index.html'; }, 2000);
         return false;
       }
       const nextIndex = (currentIndex + 1) % gameState.turnOrder.length;
@@ -292,7 +292,7 @@
         if (!gameState || !gameState.players || !gameState.turnOrder || !Array.isArray(gameState.turnOrder) || gameState.turnOrder.length === 0) {
           logToStorage('No valid game state to save');
           showPrompt('No game state to save. Redirecting to risque.');
-          setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+          setTimeout(() => { window.location.href = 'index.html'; }, 2000);
           return;
         }
         if (advanceTurn()) {
@@ -314,7 +314,7 @@
       } catch (err) {
         logToStorage(`Error saving game state: ${err.message}`);
         showPrompt('Error saving game. Redirecting to risque.');
-        setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+        setTimeout(() => { window.location.href = 'index.html'; }, 2000);
       }
     }
     function endTurn() {
@@ -327,7 +327,7 @@
       } catch (err) {
         logToStorage(`Error ending turn: ${err.message}`);
         showPrompt('Error ending turn. Redirecting to risque.');
-        setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+        setTimeout(() => { window.location.href = 'index.html'; }, 2000);
       }
     }
     document.addEventListener('DOMContentLoaded', () => {
@@ -341,7 +341,7 @@
           if (!window.gameUtils.validateGameState(window.gameState)) {
             logToStorage('Invalid game state');
             showPrompt('Invalid game state. Redirecting to risque.');
-            setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+            setTimeout(() => { window.location.href = 'index.html'; }, 2000);
             callback(null);
             return;
           }
@@ -382,15 +382,15 @@
         } catch (e) {
           logToStorage(`Failed to load game state: ${e.message}`);
           showPrompt('Failed to load game state. Redirecting to risque.');
-          setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+          setTimeout(() => { window.location.href = 'index.html'; }, 2000);
           callback(null);
         }
       };
       window.gameUtils.loadGameState((gameState) => {
         if (!gameState || !gameState.players || !gameState.currentPlayer || !gameState.turnOrder || !Array.isArray(gameState.turnOrder) || gameState.turnOrder.length === 0) {
-          logToStorage('Invalid or missing game state, redirecting to risque.html');
+          logToStorage('Invalid or missing game state, redirecting to index.html');
           showPrompt('Invalid game state. Redirecting to risque.');
-          setTimeout(() => { window.location.href = 'risque.html'; }, 2000);
+          setTimeout(() => { window.location.href = 'index.html'; }, 2000);
           return;
         }
         window.gameState = gameState;

@@ -135,7 +135,7 @@
 </head>
 <body>
   <div class="canvas-wrapper" id="canvas">
-    <img id="stage-image" src="assets/images/stage.png" alt="Stage" class="stage-image">
+    <img id="stage-image" src="assets/Images/stage.png" alt="Stage" class="stage-image">
     <svg class="svg-overlay" viewBox="0 0 1920 1080" role="region" aria-label="Territory map"></svg>
     <div class="ui-overlay" id="ui-overlay">
       <div class="title-text" id="title-text"></div>
@@ -191,18 +191,18 @@
           const rawGameState = localStorage.getItem('gameState');
           if (!rawGameState) {
             logToConsole("Error: No game state found in localStorage");
-            window.location.href = "risque.html";
+            window.location.href = "index.html";
             return;
           }
           window.gameState = JSON.parse(rawGameState);
           if (!validateGameState(window.gameState)) {
-            logToConsole("Invalid game state, redirecting to risque.html");
-            window.location.href = "risque.html";
+            logToConsole("Invalid game state, redirecting to index.html");
+            window.location.href = "index.html";
             return;
           }
         } catch (e) {
           logToConsole(`Error parsing game state: ${e.message}`);
-          window.location.href = "risque.html";
+          window.location.href = "index.html";
           return;
         }
         const validPhases = ['firstCard', 'deployOrder', 'cardPlay'];
@@ -210,8 +210,8 @@
           (window.gameState.phase === 'login' ? 'firstCard' : 
            window.gameState.phase === 'deal' || window.gameState.phase === 'deploy1' ? 'deployOrder' : 'cardPlay');
         if (!validPhases.includes(selectionPhase)) {
-          logToConsole(`Invalid selectionPhase: ${selectionPhase}, redirecting to risque.html`);
-          window.location.href = "risque.html";
+          logToConsole(`Invalid selectionPhase: ${selectionPhase}, redirecting to index.html`);
+          window.location.href = "index.html";
           return;
         }
         logToConsole(`Determined selectionPhase: ${selectionPhase}, gameState.phase: ${window.gameState.phase}`);

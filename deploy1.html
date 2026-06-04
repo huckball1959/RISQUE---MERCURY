@@ -117,7 +117,7 @@
 </head>
 <body>
   <div class="canvas-wrapper" id="canvas">
-    <img id="stage-image" src="assets/images/stage.png" alt="Stage" class="stage-image">
+    <img id="stage-image" src="assets/Images/stage.png" alt="Stage" class="stage-image">
     <svg class="svg-overlay" viewBox="0 0 1920 1080" role="region" aria-label="Territory map"></svg>
     <div class="ui-overlay" id="ui-overlay">
       <div id="title" class="text title">First Deployment</div>
@@ -170,7 +170,7 @@
           if (!loadedGameState) {
             logToConsole('Invalid game state');
             errorDiv.textContent = 'Invalid game state. Redirecting to login.';
-            setTimeout(() => { window.location.href = 'risque.html'; }, 1000);
+            setTimeout(() => { window.location.href = 'index.html'; }, 1000);
             return;
           }
           gameState = loadedGameState;
@@ -178,13 +178,13 @@
           if (invalidPlayer) {
             logToConsole(`Player has no territories: ${invalidPlayer.name}`);
             errorDiv.textContent = 'Invalid game state: Player has no territories. Redirecting to login.';
-            setTimeout(() => { window.location.href = 'risque.html'; }, 1000);
+            setTimeout(() => { window.location.href = 'index.html'; }, 1000);
             return;
           }
           if (!gameState.currentPlayer || !gameState.turnOrder.includes(gameState.currentPlayer)) {
             logToConsole(`Invalid currentPlayer or turnOrder: ${gameState.currentPlayer}`);
             errorDiv.textContent = 'Invalid game state: No current player. Redirecting to login.';
-            setTimeout(() => { window.location.href = 'risque.html'; }, 1000);
+            setTimeout(() => { window.location.href = 'index.html'; }, 1000);
             return;
           }
           deploymentOrder = [...gameState.turnOrder];
@@ -434,7 +434,7 @@
         if (!canvas || !bankNumber || !confirmButton || !resetButton || !viewTroopsButton || !playerNameText || !errorDiv || !uiOverlay) {
           logToConsole('Error: Missing critical DOM elements');
           errorDiv.textContent = 'Missing critical elements. Redirecting to login.';
-          setTimeout(() => { window.location.href = 'risque.html'; }, 1000);
+          setTimeout(() => { window.location.href = 'index.html'; }, 1000);
           return;
         }
         window.gameUtils.init();

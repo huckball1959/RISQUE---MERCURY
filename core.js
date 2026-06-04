@@ -144,6 +144,11 @@ window.gameUtils = {
     green: "#008000",
     yellow: "#ffff00"
   },
+  stageImageSrc: 'assets/Images/stage.png',
+  getCardImageSrc: function(cardName) {
+    const name = (typeof cardName === 'string' ? cardName : cardName?.name || '').toUpperCase();
+    return `assets/Images/Cards/${name}.webp`;
+  },
   getNextContinentValue: function(continent, collectionCount) {
     const increments = {
       south_america: 2,
@@ -369,7 +374,7 @@ window.gameUtils = {
     if (!stageImage) {
       stageImage = document.createElement('img');
       stageImage.id = 'stage-image';
-      stageImage.src = 'assets/images/stage.png';
+      stageImage.src = this.stageImageSrc;
       stageImage.alt = 'Stage';
       stageImage.className = 'stage-image';
       stageImage.onerror = () => this.showError('Failed to load stage image');
